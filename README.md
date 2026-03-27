@@ -23,6 +23,7 @@
   - [Advanced Testing](#advanced-testing)
     - [Example: SimpleDEX](#example-simpledex)
     - [Example: DEX Testing](#example-dex-testing)
+    - [Useful Cheatcodes](#useful-cheatcodes)
 
 ---
 
@@ -226,3 +227,33 @@ forge coverage
 ### Example: [SimpleDEX](./src/SimpleDEX.sol)
 
 ### Example: DEX Testing
+
+### Useful Cheatcodes
+
+```solidity
+// Time manipulation
+vm.warp(block.timestamp + 1 days);    // Set block.timestamp
+vm.roll(block.number + 100);          // Set block.number
+
+// Account manipulation
+vm.prank(alice);                       // Next call from alice
+vm.startPrank(alice);                  // All calls from alice
+vm.stopPrank();                        // Stop pranking
+vm.deal(alice, 100 ether);            // Give alice 100 ETH
+
+// Expectations
+vm.expectRevert();                     // Expect next call to revert
+vm.expectRevert("Error message");      // Expect specific error
+vm.expectEmit(true, true, false, true);
+emit Transfer(alice, bob, 100);        // Expect specific event
+
+// Storage manipulation
+vm.store(address, slot, value);        // Write to storage
+vm.load(address, slot);                // Read from storage
+
+// Labels (for better traces)
+vm.label(alice, "Alice");
+vm.label(bob, "Bob");
+```
+
+---
