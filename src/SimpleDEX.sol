@@ -201,6 +201,8 @@ contract SimpleDEX is ReentrancyGuard {
 
         require(tokenOutContract.transfer(msg.sender, amountOut), "Transfer failed");
 
+        _verifyConstantProduct();
+
         _update(reserveA, reserveB);
         emit Swap(msg.sender, _amountIn, amountOut, _tokenIn, address(tokenOutContract));
     }
@@ -257,7 +259,11 @@ contract SimpleDEX is ReentrancyGuard {
         uint32 timeElapsed = blockTimestamp - blockTimestampLast;
 
         if (timeElapsed > 0 && _reserveA > 0 && _reserveB > 0) {
+            // Update cumulative prices
+            // Price of A in terms of B: reserveB / reserveA
             priceACumulativeLast += ((_reserveB * PRICE_PRECISION) / _reserveA) * timeElapsed;
+
+            // Price of B in terms of A: reserveA / reserveB
             priceBCumulativeLast += ((_reserveA * PRICE_PRECISION) / _reserveB) * timeElapsed;
 
             blockTimestampLast = blockTimestamp;
@@ -272,6 +278,12 @@ contract SimpleDEX is ReentrancyGuard {
         reserveB = balanceB;
         
         emit Sync(reserveA, reserveB);
+    }
+    function _verifyConstantProduct() private view {
+        uint256 balanceA = tokenA.balanceOf(address(this));
+        uint256 balanceB = tokenB.balanceOf(address(this));
+
+        require(balanceA * balanceB >= reserveA * reserveB, "K decreased");
     }
 
     function sqrt(uint256 x) public pure returns (uint256 y) {
