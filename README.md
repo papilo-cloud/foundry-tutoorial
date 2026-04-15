@@ -24,6 +24,8 @@
     - [Example: SimpleDEX](#example-simpledex)
     - [Example: DEX Testing](#example-dex-testing)
     - [Useful Cheatcodes](#useful-cheatcodes)
+  - [Fuzzing](#fuzzing)
+    - [Basic Fuzzing](#basic-fuzzing)
 
 ---
 
@@ -257,3 +259,7 @@ vm.label(bob, "Bob");
 ```
 
 ---
+
+## Fuzzing
+
+### [Basic Fuzzing]()
