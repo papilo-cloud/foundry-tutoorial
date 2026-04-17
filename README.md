@@ -26,6 +26,12 @@
     - [Useful Cheatcodes](#useful-cheatcodes)
   - [Fuzzing](#fuzzing)
     - [Basic Fuzzing](#basic-fuzzing)
+    - [Advanced Fuzzing](#advanced-fuzzing)
+    - [Fuzz Configuration](#fuzz-configuration)
+  - [Invariant Testing](#invariant-testing)
+    - [What are Invariants?](#what-are-invariants)
+    - [Basic Invariant Test](#basic-invariant-test)
+    - [Advanced Invariant Test](#advanced-invariant-test)
 
 ---
 
@@ -262,4 +268,43 @@ vm.label(bob, "Bob");
 
 ## Fuzzing
 
-### [Basic Fuzzing]()
+### [Basic Fuzzing](./test/fuzzing/FuzzTest.t.sol)
+
+### [Advanced Fuzzing](./test/fuzzing/AdvancedFuzzTest.t.sol)
+
+### Fuzz Configuration
+
+```toml
+# foundry.toml
+[fuzz]
+runs = 256                    # Number of fuzz runs
+max_test_rejects = 65536     # Max rejected inputs
+seed = "0x123"               # Seed for reproducibility
+```
+
+```bash
+# Run with more fuzz runs
+forge test --fuzz-runs 10000
+
+# Run with seed
+forge test --fuzz-seed 0x123
+```
+
+---
+
+## Invariant Testing
+
+### What are Invariants?
+
+```
+Invariants = Properties that should ALWAYS be true
+
+Examples:
+- Total supply = sum of all balances
+- k (x × y) should never decrease
+- Contract balance ≥ sum of user deposits
+```
+
+### [Basic Invariant Test](./test/invariant/InvariantTest.t.sol)
+
+### [Advanced Invariant Test](./test/invariant/DEXInvariantTest.t.sol)
